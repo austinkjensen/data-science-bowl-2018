@@ -16,6 +16,7 @@ Without the carnage of Natives.
 import os
 import model
 import wrangler
+import numpy as np
 
 from PIL import Image
 from PIL import ImageDraw
@@ -45,42 +46,37 @@ def collect():
 	return xs_locs, ys_locs
 
 
-# NOTE: This takes too much memory on OS.
-def actualize(xs_locs, ys_locs):
+def actualize(img_loc):
 	'''Convert each image location to an actual image.
 	'''
-	xs, ys = ([], [])
-	for i in range(len(xs_locs)):
-		xs.append(Image.open(xs_locs[i][0]))
-		y_i = []
-		for j in range(len(ys_locs[i])):
-			y_i.append(Image.open(ys_locs[i][j]))
-		ys.append(y_i)
-	return xs, ys
+	return Image.open(img_loc)
 
 def view(loc):
 	'''View pretty image.
 	'''
 	Image.open(loc).show()
 
-def overlap(img_a, img_b):
-	'''Overlap two image masks.
+# TODO: Vectorize this function across m inputs
+def overlap(img_locs):
+	'''Overlap two image masks by merging together their pixel values.
 	'''
-	print(img_a.size)
-	w = (ima_a.size)
-	pass
+	img = Image.open(img_locs[0])
+	w, h = img.size
+	merged = np.zeros((w, h))
+	for img_loc in img_locs[1:]:
+		img = Image.open(img_loc)
+		assert img.size == (w, h)
+		merged += np.asarray(img)
+	merged_img = Image.fromarray(merged)
+	merged_img.show()
 
 if __name__ == '__main__':
 	print('Where my nuclei at?')
 	xs_locs, ys_locs = collect()
-	xs, ys = actualize(xs_locs, ys_locs)
-
-	print(xs_locs[0])
-	print(xs[0])
-	xs[0].show()
-
 	# Attempt very dangerous merge thing
-	overlap(ys[0], ys[1])
+	sample_index = 150
+	Image.open(xs_locs[sample_index][0]).show()
+	overlap(ys_locs[sample_index])
 
 
 
