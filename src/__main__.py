@@ -44,15 +44,18 @@ def collect():
 	assert len(xs_locs) == len(ys_locs)
 	return xs_locs, ys_locs
 
+
+# NOTE: This takes too much memory on OS.
 def actualize(xs_locs, ys_locs):
 	'''Convert each image location to an actual image.
 	'''
 	xs, ys = ([], [])
 	for i in range(len(xs_locs)):
-		xs.append(Image.open(xs_locs[0][i]))
-		ys.append([])
+		xs.append(Image.open(xs_locs[i][0]))
+		y_i = []
 		for j in range(len(ys_locs[i])):
-			ys[i].append(Image.open(ys_locs[j]))
+			y_i.append(Image.open(ys_locs[i][j]))
+		ys.append(y_i)
 	return xs, ys
 
 def view(loc):
@@ -63,6 +66,8 @@ def view(loc):
 def overlap(img_a, img_b):
 	'''Overlap two image masks.
 	'''
+	print(img_a.size)
+	w = (ima_a.size)
 	pass
 
 if __name__ == '__main__':
