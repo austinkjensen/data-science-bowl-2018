@@ -77,6 +77,7 @@ if __name__ == '__main__':
 	sample_index = 150
 	Image.open(xs_locs[sample_index][0]).show()
 	overlap(ys_locs[sample_index])
+	# Okay well now show off merge thing to thy friends
 
 
 
